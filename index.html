@@ -6,227 +6,126 @@
 <title>Weather Dashboard</title>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
 <style>
-  body {
-    font-family: 'Open Sans', sans-serif;
-    background: #edf2f7;
-    margin: 0;
-    padding: 20px;
-  }
-  .header {
-    background-color: #4b79a1;
-    color: white;
-    padding: 20px;
-    font-size: 1.5rem;
-    text-align: center;
-    border-radius: 10px;
-  }
-  .main-content {
-    display: flex;
-    margin-top: 20px;
-  }
-  .search-panel {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    width: 20%;
-    margin-right: 20px;
-  }
-  .search-panel input,
-  .search-panel button,
-  .search-panel .city {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  .search-panel button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  .search-panel .city {
-    background-color: #e7e7e7;
-    cursor: pointer;
-    text-align: left;
-  }
-  .search-panel .city:hover {
-    background-color: #d7d7d7;
-  }
-  .weather-info {
-    flex-grow: 1;
-    background-color: #ffffff;
-    border-radius: 10px;
-    padding: 20px;
-  }
-  .weather-info header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 20px;
-  }
-  .weather-info header h2 {
-    margin: 0;
-  }
-  .forecast {
-    display: flex;
-    justify-content: space-between;
-  }
-  .forecast .day {
-    flex-grow: 1;
-    background: #e7e7e7;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-  }
-  .forecast .day:not(:last-child) {
-    margin-right: 20px;
-  }
+  body, h1, h2, h3, p { margin: 0; padding: 0; }
+  body { font-family: 'Open Sans', sans-serif; background-color: #e2e2e2; }
+  .wrapper { display: flex; max-width: 960px; margin: 20px auto; }
+  
+  /* Sidebar Styles */
+  .sidebar { background-color: #f8f8f8; padding: 20px; width: 250px; }
+  .sidebar h1 { color: #333; margin-bottom: 20px; }
+  .search { margin-bottom: 20px; }
+  .search input { width: calc(100% - 42px); padding: 10px; border: 2px solid #d2d2d2; border-radius: 4px 0 0 4px; }
+  .search button { width: 40px; background-color: #1e90ff; color: white; border: none; border-radius: 0 4px 4px 0; }
+  .city-list { list-style-type: none; }
+  .city-list li { background-color: #ddd; padding: 10px; margin-bottom: 10px; cursor: pointer; border-radius: 4px; }
+  .city-list li:hover { background-color: #ccc; }
+  
+  /* Main Content Styles */
+  .content { flex-grow: 1; background-color: #ffffff; margin-left: 20px; border-radius: 4px; padding: 20px; }
+  .content h2 { color: #1e90ff; margin-bottom: 20px; }
+  .details, .forecast { display: flex; justify-content: space-between; }
+  .forecast .day { background-color: #f0f0f0; padding: 10px; border-radius: 4px; width: 18%; }
+  .forecast img { width: 40px; height: 40px; }
 </style>
 </head>
 <body>
 
-<div class="header">
-  Weather Dashboard
-</div>
-
-<div class="main-content">
-  <div class="search-panel">
-    <input type="text" placeholder="Search for a city" />
-    <button>Search</button>
-    <div class="city">San Diego</div>
-    <div class="city">Atlanta</div>
-    <div class="city">Denver</div>
-    <div class="city">Seattle</div>
-    <div class="city">Orlando</div>
-    <div class="city">New York</div>
-    <div class="city">Chicago</div>
-    <div class="city">Austin</div>
+<div class="wrapper">
+  <!-- Sidebar for searching cities -->
+  <div class="sidebar">
+    <h1>Search for a City:</h1>
+    <div class="search">
+      <input type="text" id="search-input" placeholder="Enter City Name" />
+      <button id="search-button">🔍</button>
+    </div>
+    <ul class="city-list" id="city-list">
+      <!-- City buttons will be added here -->
+    </ul>
   </div>
-
-  <div class="weather-info">
-    <header>
-      <h2>Atlanta (9/13/2022) ☀️</h2>
-      <div>
-        <div>Temp: 76.62°F</div>
-        <div>Wind: 8.43 MPH</div>
-        <div>Humidity: 44 %</div>
-      </div>
-    </header>
-
-    <h3>5-Day Forecast:</h3>
-    <div class="forecast">
-      <div class="day">
-        <h4>9/14/2022</h4>
-        <img src="https://via.placeholder.com/50" alt="Weather icon" />
-        <div>Temp: 63.55 °F</div>
-        <div>Wind: 3.94 MPH</div>
-        <div>Humidity: 63 %</div>
-      </div>
-      <div class="day">
-        <h4>9/15/2022</h4>
-        <img src="https://via.placeholder.com/50" alt="Weather icon" />
-        <div>Temp: 66.52 °F</div>
-        <div>Wind: 3.91 MPH</div>
-        <div>Humidity: 64 %</div>
-      </div>
-      <div class="day">
-        <h4>9/16/2022</h4>
-        <img src="https://via.placeholder.com/50" alt="Weather icon" />
-        <div>Temp: 67.71 °F</div>
-        <div>Wind: 3.27 MPH</div>
-        <div>Humidity: 64 %</div>
-      </div>
-      <div class="day">
-        <h4>9/17/2022</h4>
-        <img src="https://via.placeholder.com/50" alt="Weather icon" />
-        <div>Temp: 67.1 °F</div>
-        <div>Wind: 4.65 MPH</div>
-        <div>Humidity: 72 %</div>
-      </div>
-      <div class="day">
-        <h4>9/18/2022</h4>
-        <img src="https://via.placeholder.com/50" alt="Weather icon" />
-        <div>Temp: 70.57 °F</div>
-        <div>Wind: 4.23 MPH</div>
-        <div>Humidity: 62 %</div>
-      </div>
+  
+  <!-- Main content area -->
+  <div class="content">
+    <h2 id="location-name">Weather Dashboard</h2>
+    <div class="details" id="current-weather">
+      <!-- Current weather will be inserted here -->
+    </div>
+    <h2>5-Day Forecast:</h2>
+    <div class="forecast" id="forecast-container">
+      <!-- 5-day forecast will be inserted here -->
     </div>
   </div>
 </div>
 
-  <script>
-    // Your OpenWeather API key
-    var apiKey = '309f7d94b615b8ccc37b28c459d59071';
+<script>
+// Your OpenWeather API key
+var apiKey = '309f7d94b615b8ccc37b28c459d59071';
 
-    // Function to fetch and display weather data
-    function fetchWeather(cityName) {
-      var weatherUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + apiKey + '&units=imperial';
-      fetch(weatherUrl)
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(data) {
-          var currentWeatherDiv = document.getElementById('current-weather');
-          currentWeatherDiv.innerHTML = 
-            '<h2>' + data.name + ' (' + new Date().toLocaleDateString() + ')</h2>' +
-            '<p>Temp: ' + data.main.temp + '°F</p>' +
-            '<p>Wind: ' + data.wind.speed + ' MPH</p>' +
-            '<p>Humidity: ' + data.main.humidity + ' %</p>';
-          fetchForecast(cityName);
-        })
-        .catch(function(error) {
-          console.error('Error fetching weather:', error);
-        });
-    }
+function fetchWeather(cityName) {
+  var currentWeatherUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + apiKey + '&units=imperial';
 
-    // Function to fetch and display 5-day forecast
-    function fetchForecast(cityName) {
-      var forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + cityName + '&appid=' + apiKey + '&units=imperial';
-      fetch(forecastUrl)
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(data) {
-          var forecastDiv = document.getElementById('forecast');
-          forecastDiv.innerHTML = ''; // Clear previous entries
-          for (var i = 0; i < data.list.length; i += 8) {
-            var dayData = data.list[i];
-            var date = new Date(dayData.dt_txt);
-            forecastDiv.innerHTML += 
-              '<div>' +
-              '<h3>' + (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + '</h3>' +
-              '<p>Temp: ' + dayData.main.temp + '°F</p>' +
-              '<p>Wind: ' + dayData.wind.speed + ' MPH</p>' +
-              '<p>Humidity: ' + dayData.main.humidity + ' %</p>' +
-              '</div>';
-          }
-        })
-        .catch(function(error) {
-          console.error('Error fetching forecast:', error);
-        });
-    }
-
-    // Add search button click event listener
-    document.getElementById('search-button').addEventListener('click', function() {
-      var cityInput = document.getElementById('city-input');
-      fetchWeather(cityInput.value);
+  fetch(currentWeatherUrl)
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
+      var detailsDiv = document.getElementById('current-weather');
+      detailsDiv.innerHTML = 
+        '<div>Temp: ' + Math.round(data.main.temp) + '°F</div>' +
+        '<div>Wind: ' + Math.round(data.wind.speed) + ' MPH</div>' +
+        '<div>Humidity: ' + data.main.humidity + '%</div>';
+      document.getElementById('location-name').textContent = data.name;
+      fetchForecast(cityName);
+    })
+    .catch(function(error) {
+      console.error('Error:', error);
     });
+}
 
-    // Initial fetch for Riverside weather
-    fetchWeather('Riverside');
+function fetchForecast(cityName) {
+  var forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + cityName + '&appid=' + apiKey + '&units=imperial';
 
-    // Add list of cities for quick search (could be fetched from a server or local storage)
-    var cities = ['San Diego', 'Atlanta', 'Denver', 'Seattle', 'Orlando', 'New York', 'Chicago', 'Austin'];
-    var cityListDiv = document.getElementById('city-list');
-    cities.forEach(function(city) {
-      cityListDiv.innerHTML += '<li onclick="fetchWeather(\'' + city + '\')">' + city + '</li>';
+  fetch(forecastUrl)
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
+      var forecastContainer = document.getElementById('forecast-container');
+      forecastContainer.innerHTML = '';
+      for (var i = 0; i < 40; i += 8) { // Only take one reading per day
+        var dayData = data.list[i];
+        var date = new Date(dayData.dt * 1000);
+        forecastContainer.innerHTML +=
+          '<div class="day">' +
+          '<h3>' + (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + '</h3>' +
+          '<img src="https://openweathermap.org/img/wn/' + dayData.weather[0].icon + '.png" alt="Weather Icon">' +
+          '<div>Temp: ' + Math.round(dayData.main.temp) + '°F</div>' +
+          '<div>Wind: ' + Math.round(dayData.wind.speed) + ' MPH</div>' +
+          '<div>Humidity: ' + dayData.main.humidity + '%</div>' +
+          '</div>';
+      }
+    })
+    .catch(function(error) {
+      console.error('Error:', error);
     });
-  </script>
+}
+
+document.getElementById('search-button').addEventListener('click', function() {
+  var cityName = document.getElementById('search-input').value;
+  fetchWeather(cityName);
+});
+
+// Load default city's weather on initial load
+fetchWeather('Riverside');
+
+// Add city buttons
+var cities = ['San Diego', 'Atlanta', 'Denver', 'Seattle', 'Orlando', 'New York', 'Chicago', 'Austin'];
+var cityList = document.getElementById('city-list');
+cities.forEach(function(city) {
+  var li = document.createElement('li');
+  li.textContent = city;
+  li.addEventListener('click', function() {
+    fetchWeather(city);
+  });
+  cityList.appendChild(li);
+});
+</script>
+
 </body>
 </html>
 
