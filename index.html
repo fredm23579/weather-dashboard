@@ -4,84 +4,132 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Weather Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Open Sans', sans-serif;
+      background-color: #edf2f7;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .title {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .search-box {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+    .search-box input[type="text"] {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #cbd5e0;
+      border-radius: 5px;
+    }
+    .search-box button {
+      padding: 10px;
+      background-color: #4299e1;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .search-box button:hover {
+      background-color: #3182ce;
+    }
+    .weather-info {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    .forecast-title {
+      margin-bottom: 20px;
+    }
+    .forecast-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+    }
+    .forecast-item {
+      background-color: white;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
     }
   </style>
 </head>
-<body class="bg-gray-100">
-  <div class="container mx-auto p-5">
-    <h1 class="text-3xl font-bold text-gray-800 text-center mb-4">Weather Dashboard</h1>
+<body>
+  <div class="container">
+    <h1 class="title">Weather Dashboard</h1>
     
-    <!-- Search section -->
-    <div class="flex flex-col md:flex-row bg-white shadow-lg rounded-lg p-4 mb-4">
-      <div class="flex-1 md:mr-2">
-        <label for="city-search" class="block text-gray-700 text-sm font-bold mb-2">Search for a City:</label>
-        <input id="city-search" type="text" placeholder="Enter City Name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-      </div>
-      <button id="search-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4 md:mt-0">Search</button>
+    <div class="search-box">
+      <input type="text" id="city-search" placeholder="Enter City Name">
+      <button id="search-btn">Search</button>
     </div>
 
-    <!-- City Weather Information -->
-    <div class="bg-white shadow-lg rounded-lg p-4 mb-4">
-      <h2 id="city-name" class="text-2xl font-bold text-gray-800"></h2>
-      <p id="current-temp" class="text-gray-700"></p>
-      <p id="current-wind" class="text-gray-700"></p>
-      <p id="current-humidity" class="text-gray-700"></p>
+    <div class="weather-info" id="current-weather">
+      <!-- Current weather will be displayed here -->
     </div>
 
-    <!-- 5-Day Forecast -->
-    <h2 class="text-2xl font-bold text-gray-800 mb-4">5-Day Forecast:</h2>
-    <div id="forecast" class="grid grid-cols-1 md:grid-cols-5 gap-4">
-      <!-- Forecast cards will be injected here by JavaScript -->
+    <h2 class="forecast-title">5-Day Forecast:</h2>
+    <div class="forecast-container" id="forecast">
+      <!-- 5-Day forecast will be displayed here -->
     </div>
   </div>
 
   <script>
-    // JavaScript to handle city search and display weather information
     document.getElementById('search-btn').addEventListener('click', function() {
       var cityName = document.getElementById('city-search').value;
       var apiKey = '6bcbafbbb6b80088967801dc260b977b'; // Your OpenWeather API key
       var weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=imperial`;
-      
+
       fetch(weatherUrl)
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Weather data not found for ' + cityName);
+          }
+          return response.json();
+        })
         .then(data => {
-          // Display current weather information
-          document.getElementById('city-name').textContent = data.name + ' (Current)';
-          document.getElementById('current-temp').textContent = 'Temp: ' + data.main.temp + ' °F';
-          document.getElementById('current-wind').textContent = 'Wind: ' + data.wind.speed + ' MPH';
-          document.getElementById('current-humidity').textContent = 'Humidity: ' + data.main.humidity + '%';
-          
-          // Get 5-day forecast data
+          var currentWeatherDiv = document.getElementById('current-weather');
+          currentWeatherDiv.innerHTML = `
+            <h2>${data.name} (Current)</h2>
+            <p>Temp: ${data.main.temp} °F</p>
+            <p>Wind: ${data.wind.speed} MPH</p>
+            <p>Humidity: ${data.main.humidity}%</p>
+          `;
+
           var forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=imperial`;
           return fetch(forecastUrl);
         })
         .then(response => response.json())
         .then(data => {
-          var forecastEl = document.getElementById('forecast');
-          forecastEl.innerHTML = ''; // Clear previous forecasts
-          
-          // Process and display 5-day forecast
-          for (let i = 0; i < data.list.length; i+=8) { // API returns weather in 3-hour intervals
+          var forecastDiv = document.getElementById('forecast');
+          forecastDiv.innerHTML = '';
+          for (let i = 0; i < data.list.length; i += 8) {
             var dayData = data.list[i];
-            var forecastCard = document.createElement('div');
-            forecastCard.classList = 'bg-white shadow-lg rounded-lg p-4 text-center';
-            forecastCard.innerHTML = `
-              <h3 class="font-bold text-gray-800">${new Date(dayData.dt_txt).toLocaleDateString()}</h3>
-              <img src="https://openweathermap.org/img/w/${dayData.weather[0].icon}.png" alt="${dayData.weather[0].description}">
-              <p class="text-gray-700">Temp: ${dayData.main.temp} °F</p>
-              <p class="text-gray-700">Wind: ${dayData.wind.speed} MPH</p>
-              <p class="text-gray-700">Humidity: ${dayData.main.humidity}%</p>
+            var forecastItemDiv = document.createElement('div');
+            forecastItemDiv.className = 'forecast-item';
+            forecastItemDiv.innerHTML = `
+              <h3>${new Date(dayData.dt_txt).toLocaleDateString()}</h3>
+              <img src="https://openweathermap.org/img/w/${dayData.weather[0].icon}.png" alt="${dayData.weather[0].description}" />
+              <p>Temp: ${dayData.main.temp} °F</p>
+              <p>Wind: ${dayData.wind.speed} MPH</p>
+              <p>Humidity: ${dayData.main.humidity}%</p>
             `;
-            forecastEl.appendChild(forecastCard);
+            forecastDiv.appendChild(forecastItemDiv);
           }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+          console.error('Error:', error);
+          alert(error.message);
+        });
     });
   </script>
 </body>
