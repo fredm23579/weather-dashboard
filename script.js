@@ -22,7 +22,7 @@ function fetchCurrentWeather(cityName) {
 }
 
 function fetchWeatherForecast(cityName) {
-    var apiKey = 'YOUR_API_KEY';
+    var apiKey ='6bcbafbbb6b80088967801dc260b977b';
     var url = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=imperial`;
 
     fetch(url)
