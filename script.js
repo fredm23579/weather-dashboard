@@ -141,7 +141,7 @@ function handleAPIError(city, xhr) {
 
 // Event listener for search button
 searchButton.addEventListener("click", () => {
-  const city = cityInput.value.trim(); 
+  const city = cityInput.value.trim() 
   if (city) { 
     fetchWeatherData(city);
     cityInput.value = ''; 
