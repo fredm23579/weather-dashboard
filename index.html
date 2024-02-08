@@ -81,9 +81,8 @@
   </div>
 
   <script>
-    document.getElementById('search-btn').addEventListener('click', function() {
-      var cityName = document.getElementById('city-search').value;
-      var apiKey = '6bcbafbbb6b80088967801dc260b977b'; // Your OpenWeather API key
+    function fetchWeather(cityName) {
+      var apiKey = '6bcbafbbb6b80088967801dc260b977b'; // Replace with your actual OpenWeather API key
       var weatherUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + apiKey + '&units=imperial';
 
       fetch(weatherUrl)
@@ -125,8 +124,19 @@
           console.error('Error:', error);
           alert(error.message);
         });
+    }
+
+    document.getElementById('search-btn').addEventListener('click', function() {
+      var cityName = document.getElementById('city-search').value;
+      fetchWeather(cityName);
     });
+
+    // Fetch weather for Riverside (UCR) on page load
+    fetchWeather('Riverside,US');
   </script>
+</body>
+</html>
+
 </body>
 </html>
 
