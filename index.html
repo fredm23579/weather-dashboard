@@ -13,7 +13,7 @@
       padding: 20px;
     }
     .container {
-      max-width: 600px;
+      max-width: 800px;
       margin: 0 auto;
     }
     .title {
@@ -42,7 +42,7 @@
     .search-box button:hover {
       background-color: #3182ce;
     }
-    .weather-info {
+    .weather-info, .forecast-item {
       background-color: white;
       padding: 20px;
       border-radius: 5px;
@@ -57,9 +57,6 @@
       gap: 10px;
     }
     .forecast-item {
-      background-color: white;
-      padding: 10px;
-      border-radius: 5px;
       text-align: center;
     }
   </style>
@@ -87,46 +84,44 @@
     document.getElementById('search-btn').addEventListener('click', function() {
       var cityName = document.getElementById('city-search').value;
       var apiKey = '6bcbafbbb6b80088967801dc260b977b'; // Your OpenWeather API key
-      var weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=imperial`;
+      var weatherUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + apiKey + '&units=imperial';
 
       fetch(weatherUrl)
-        .then(response => {
+        .then(function(response) {
           if (!response.ok) {
             throw new Error('Weather data not found for ' + cityName);
           }
           return response.json();
         })
-        .then(data => {
+        .then(function(data) {
           var currentWeatherDiv = document.getElementById('current-weather');
-          currentWeatherDiv.innerHTML = `
-            <h2>${data.name} (Current)</h2>
-            <p>Temp: ${data.main.temp} °F</p>
-            <p>Wind: ${data.wind.speed} MPH</p>
-            <p>Humidity: ${data.main.humidity}%</p>
-          `;
+          currentWeatherDiv.innerHTML = 
+            '<h2>' + data.name + ' (Current)</h2>' +
+            '<p>Temp: ' + data.main.temp + ' °F</p>' +
+            '<p>Wind: ' + data.wind.speed + ' MPH</p>' +
+            '<p>Humidity: ' + data.main.humidity + '%</p>';
 
-          var forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=imperial`;
+          var forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + cityName + '&appid=' + apiKey + '&units=imperial';
           return fetch(forecastUrl);
         })
-        .then(response => response.json())
-        .then(data => {
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
           var forecastDiv = document.getElementById('forecast');
           forecastDiv.innerHTML = '';
-          for (let i = 0; i < data.list.length; i += 8) {
+          for (var i = 0; i < data.list.length; i += 8) {
             var dayData = data.list[i];
             var forecastItemDiv = document.createElement('div');
             forecastItemDiv.className = 'forecast-item';
-            forecastItemDiv.innerHTML = `
-              <h3>${new Date(dayData.dt_txt).toLocaleDateString()}</h3>
-              <img src="https://openweathermap.org/img/w/${dayData.weather[0].icon}.png" alt="${dayData.weather[0].description}" />
-              <p>Temp: ${dayData.main.temp} °F</p>
-              <p>Wind: ${dayData.wind.speed} MPH</p>
-              <p>Humidity: ${dayData.main.humidity}%</p>
-            `;
+            forecastItemDiv.innerHTML =
+              '<h3>' + new Date(dayData.dt_txt).toLocaleDateString() + '</h3>' +
+              '<img src="https://openweathermap.org/img/w/' + dayData.weather[0].icon + '.png" alt="' + dayData.weather[0].description + '" />' +
+              '<p>Temp: ' + dayData.main.temp + ' °F</p>' +
+              '<p>Wind: ' + dayData.wind.speed + ' MPH</p>' +
+              '<p>Humidity: ' + dayData.main.humidity + '%</p>';
             forecastDiv.appendChild(forecastItemDiv);
           }
         })
-        .catch(error => {
+        .catch(function(error) {
           console.error('Error:', error);
           alert(error.message);
         });
@@ -134,3 +129,4 @@
   </script>
 </body>
 </html>
+
