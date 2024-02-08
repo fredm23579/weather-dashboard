@@ -8,131 +8,172 @@
   <style>
     body {
       font-family: 'Open Sans', sans-serif;
-      background-color: #edf2f7;
       margin: 0;
-      padding: 20px;
+      padding: 0;
+      background: #edf2f7;
     }
     .container {
-      max-width: 800px;
-      margin: 0 auto;
+      max-width: 960px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-    .title {
-      text-align: center;
+    .search-area {
+      background-color: #ffffff;
+      padding: 20px;
       margin-bottom: 20px;
+      border-radius: 5px;
     }
     .search-box {
       display: flex;
-      flex-direction: column;
       margin-bottom: 20px;
     }
-    .search-box input[type="text"] {
+    .search-box input {
+      flex: 1;
       padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #cbd5e0;
-      border-radius: 5px;
+      border: 2px solid #dddddd;
+      border-radius: 5px 0 0 5px;
+      border-right: none;
     }
     .search-box button {
-      padding: 10px;
-      background-color: #4299e1;
+      padding: 10px 20px;
+      background-color: #1e40af;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 0 5px 5px 0;
       cursor: pointer;
     }
-    .search-box button:hover {
-      background-color: #3182ce;
+    .city-list {
+      list-style: none;
+      padding-left: 0;
     }
-    .weather-info, .forecast-item {
-      background-color: white;
+    .city-list li {
+      background-color: #dddddd;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+    .city-list li:hover {
+      background-color: #cccccc;
+    }
+    .weather-info {
       padding: 20px;
       border-radius: 5px;
+      background-color: #1e40af;
+      color: white;
       margin-bottom: 20px;
     }
-    .forecast-title {
-      margin-bottom: 20px;
+    .forecast {
+      display: flex;
+      justify-content: space-between;
     }
-    .forecast-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 10px;
-    }
-    .forecast-item {
+    .forecast > div {
+      flex: 1;
+      background-color: #dddddd;
+      padding: 20px;
+      border-radius: 5px;
+      margin-right: 20px;
       text-align: center;
+    }
+    .forecast > div:last-child {
+      margin-right: 0;
+    }
+    .forecast h3 {
+      margin: 10px 0;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1 class="title">Weather Dashboard</h1>
-    
-    <div class="search-box">
-      <input type="text" id="city-search" placeholder="Enter City Name">
-      <button id="search-btn">Search</button>
+    <div class="search-area">
+      <div class="search-box">
+        <input type="text" id="city-input" placeholder="Search for a City:" />
+        <button id="search-button">Search</button>
+      </div>
+      <ul class="city-list" id="city-list">
+        <!-- City buttons will be added here -->
+      </ul>
     </div>
 
     <div class="weather-info" id="current-weather">
-      <!-- Current weather will be displayed here -->
+      <!-- Current weather details will be added here -->
     </div>
 
-    <h2 class="forecast-title">5-Day Forecast:</h2>
-    <div class="forecast-container" id="forecast">
-      <!-- 5-Day forecast will be displayed here -->
+    <div class="forecast" id="forecast">
+      <!-- 5-day forecast details will be added here -->
     </div>
   </div>
 
   <script>
-    function fetchWeather(cityName) {
-      var apiKey = '6bcbafbbb6b80088967801dc260b977b'; // Replace with your actual OpenWeather API key
-      var weatherUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + apiKey + '&units=imperial';
+    // Your OpenWeather API key
+    var apiKey = '309f7d94b615b8ccc37b28c459d59071';
 
+    // Function to fetch and display weather data
+    function fetchWeather(cityName) {
+      var weatherUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + apiKey + '&units=imperial';
       fetch(weatherUrl)
         .then(function(response) {
-          if (!response.ok) {
-            throw new Error('Weather data not found for ' + cityName);
-          }
           return response.json();
         })
         .then(function(data) {
           var currentWeatherDiv = document.getElementById('current-weather');
           currentWeatherDiv.innerHTML = 
-            '<h2>' + data.name + ' (Current)</h2>' +
-            '<p>Temp: ' + data.main.temp + ' °F</p>' +
+            '<h2>' + data.name + ' (' + new Date().toLocaleDateString() + ')</h2>' +
+            '<p>Temp: ' + data.main.temp + '°F</p>' +
             '<p>Wind: ' + data.wind.speed + ' MPH</p>' +
-            '<p>Humidity: ' + data.main.humidity + '%</p>';
-
-          var forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + cityName + '&appid=' + apiKey + '&units=imperial';
-          return fetch(forecastUrl);
-        })
-        .then(function(response) { return response.json(); })
-        .then(function(data) {
-          var forecastDiv = document.getElementById('forecast');
-          forecastDiv.innerHTML = '';
-          for (var i = 0; i < data.list.length; i += 8) {
-            var dayData = data.list[i];
-            var forecastItemDiv = document.createElement('div');
-            forecastItemDiv.className = 'forecast-item';
-            forecastItemDiv.innerHTML =
-              '<h3>' + new Date(dayData.dt_txt).toLocaleDateString() + '</h3>' +
-              '<img src="https://openweathermap.org/img/w/' + dayData.weather[0].icon + '.png" alt="' + dayData.weather[0].description + '" />' +
-              '<p>Temp: ' + dayData.main.temp + ' °F</p>' +
-              '<p>Wind: ' + dayData.wind.speed + ' MPH</p>' +
-              '<p>Humidity: ' + dayData.main.humidity + '%</p>';
-            forecastDiv.appendChild(forecastItemDiv);
-          }
+            '<p>Humidity: ' + data.main.humidity + ' %</p>';
+          fetchForecast(cityName);
         })
         .catch(function(error) {
-          console.error('Error:', error);
-          alert(error.message);
+          console.error('Error fetching weather:', error);
         });
     }
 
-    document.getElementById('search-btn').addEventListener('click', function() {
-      var cityName = document.getElementById('city-search').value;
-      fetchWeather(cityName);
+    // Function to fetch and display 5-day forecast
+    function fetchForecast(cityName) {
+      var forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + cityName + '&appid=' + apiKey + '&units=imperial';
+      fetch(forecastUrl)
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data) {
+          var forecastDiv = document.getElementById('forecast');
+          forecastDiv.innerHTML = ''; // Clear previous entries
+          for (var i = 0; i < data.list.length; i += 8) {
+            var dayData = data.list[i];
+            var date = new Date(dayData.dt_txt);
+            forecastDiv.innerHTML += 
+              '<div>' +
+              '<h3>' + (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + '</h3>' +
+              '<p>Temp: ' + dayData.main.temp + '°F</p>' +
+              '<p>Wind: ' + dayData.wind.speed + ' MPH</p>' +
+              '<p>Humidity: ' + dayData.main.humidity + ' %</p>' +
+              '</div>';
+          }
+        })
+        .catch(function(error) {
+          console.error('Error fetching forecast:', error);
+        });
+    }
+
+    // Add search button click event listener
+    document.getElementById('search-button').addEventListener('click', function() {
+      var cityInput = document.getElementById('city-input');
+      fetchWeather(cityInput.value);
     });
 
-    // Fetch weather for Riverside (UCR) on page load
-    fetchWeather('Riverside,US');
+    // Initial fetch for Riverside weather
+    fetchWeather('Riverside');
+
+    // Add list of cities for quick search (could be fetched from a server or local storage)
+    var cities = ['San Diego', 'Atlanta', 'Denver', 'Seattle', 'Orlando', 'New York', 'Chicago', 'Austin'];
+    var cityListDiv = document.getElementById('city-list');
+    cities.forEach(function(city) {
+      cityListDiv.innerHTML += '<li onclick="fetchWeather(\'' + city + '\')">' + city + '</li>';
+    });
   </script>
 </body>
 </html>
