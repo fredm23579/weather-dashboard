@@ -1,45 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather Dashboard</title>
-  <!-- Add this line to link to your locally generated Tailwind CSS file -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
-  <!-- Add this line to link to your locally generated Tailwind CSS file -->
-  <link href="output.css" rel="stylesheet">
-  <link href="style.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
-<body class="bg-gray-100">
-  <div class="container mx-auto p-5">
-    <h1 class="text-3xl font-bold text-gray-800 text-center mb-4">Weather Dashboard</h1>
-    
-    <!-- Search section -->
-    <div class="flex flex-col md:flex-row bg-white shadow-lg rounded-lg p-4 mb-4">
-      <div class="flex-1 md:mr-2">
-        <label for="city-search" class="block text-gray-700 text-sm font-bold mb-2">Search for a City:</label>
-        <input id="city-search" type="text" placeholder="Enter City Name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-      </div>
-      <button id="search-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4 md:mt-0">Search</button>
+<body>
+    <div class="weather-dashboard">
+        <div class="search-section">
+            <h2>Search for a City:</h2>
+            <input type="text" id="city-search" placeholder="Enter City Name">
+            <button id="search-btn">Search</button>
+        </div>
+        <div class="current-weather">
+            <h2 id="city-title">Current Weather</h2>
+            <div id="current-weather-data">
+                <!-- Weather data will be inserted here -->
+            </div>
+        </div>
+        <div class="forecast">
+            <h2>5-Day Forecast:</h2>
+            <div id="forecast-container">
+                <!-- Forecast data will be inserted here -->
+            </div>
+        </div>
     </div>
-
-    <!-- City Weather Information -->
-    <div class="bg-white shadow-lg rounded-lg p-4 mb-4">
-      <h2 id="city-name" class="text-2xl font-bold text-gray-800"></h2>
-      <p id="current-temp" class="text-gray-700"></p>
-      <p id="current-wind" class="text-gray-700"></p>
-      <p id="current-humidity" class="text-gray-700"></p>
-    </div>
-
-    <!-- 5-Day Forecast -->
-    <h2 class="text-2xl font-bold text-gray-800 mb-4">5-Day Forecast:</h2>
-    <div id="forecast" class="grid grid-cols-1 md:grid-cols-5 gap-4">
-      <!-- Forecast cards will be injected here by JavaScript -->
-    </div>
-  </div>
- 
-  <script type="module" src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
