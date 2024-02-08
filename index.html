@@ -7,128 +7,130 @@
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
 <style>
   body, h1, h2, h3, p { margin: 0; padding: 0; }
-  body { font-family: 'Open Sans', sans-serif; background-color: #e2e2e2; }
-  .wrapper { display: flex; max-width: 960px; margin: 20px auto; }
-  
-  /* Sidebar Styles */
-  .sidebar { background-color: #f8f8f8; padding: 20px; width: 250px; }
-  .sidebar h1 { color: #333; margin-bottom: 20px; }
-  .search { margin-bottom: 20px; }
-  .search input { width: calc(100% - 42px); padding: 10px; border: 2px solid #d2d2d2; border-radius: 4px 0 0 4px; }
-  .search button { width: 40px; background-color: #1e90ff; color: white; border: none; border-radius: 0 4px 4px 0; }
-  .city-list { list-style-type: none; }
-  .city-list li { background-color: #ddd; padding: 10px; margin-bottom: 10px; cursor: pointer; border-radius: 4px; }
-  .city-list li:hover { background-color: #ccc; }
-  
-  /* Main Content Styles */
-  .content { flex-grow: 1; background-color: #ffffff; margin-left: 20px; border-radius: 4px; padding: 20px; }
-  .content h2 { color: #1e90ff; margin-bottom: 20px; }
-  .details, .forecast { display: flex; justify-content: space-between; }
-  .forecast .day { background-color: #f0f0f0; padding: 10px; border-radius: 4px; width: 18%; }
-  .forecast img { width: 40px; height: 40px; }
+  body { font-family: 'Open Sans', sans-serif; background-color: #f2f2f2; }
+  .container { max-width: 1024px; margin: auto; padding: 20px; }
+  .header { background-color: #2c3e50; padding: 10px 20px; color: white; text-align: left; margin-bottom: 15px; }
+  .search-area { float: left; width: 250px; background: #fff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+  .search-area button { width: 100%; padding: 10px; margin-top: 10px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; }
+  .search-area input { width: calc(100% - 20px); padding: 10px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ddd; }
+  .city { background-color: #ecf0f1; padding: 10px; margin-top: 10px; cursor: pointer; }
+  .weather-info { float: right; width: calc(100% - 290px); background: #fff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+  .weather-info h2 { color: #3498db; margin-bottom: 10px; }
+  .forecast { overflow: hidden; padding-top: 20px; }
+  .forecast .day { float: left; width: 18%; background-color: #ecf0f1; padding: 20px; margin-right: 2%; text-align: center; }
+  .forecast .day:last-child { margin-right: 0; }
+  .forecast h3 { margin-bottom: 15px; }
+  .forecast img { margin-bottom: 10px; }
+  .clear { clear: both; }
 </style>
 </head>
 <body>
 
-<div class="wrapper">
-  <!-- Sidebar for searching cities -->
-  <div class="sidebar">
-    <h1>Search for a City:</h1>
-    <div class="search">
-      <input type="text" id="search-input" placeholder="Enter City Name" />
-      <button id="search-button">🔍</button>
-    </div>
-    <ul class="city-list" id="city-list">
-      <!-- City buttons will be added here -->
-    </ul>
+<div class="container">
+  <div class="header">
+    <h1>Weather Dashboard</h1>
   </div>
-  
-  <!-- Main content area -->
-  <div class="content">
-    <h2 id="location-name">Weather Dashboard</h2>
-    <div class="details" id="current-weather">
-      <!-- Current weather will be inserted here -->
-    </div>
-    <h2>5-Day Forecast:</h2>
-    <div class="forecast" id="forecast-container">
-      <!-- 5-day forecast will be inserted here -->
+
+  <div class="search-area">
+    <input type="text" id="cityInput" placeholder="Search for a City">
+    <button id="searchButton">Search</button>
+    <div id="cityList">
+      <div class="city">San Diego</div>
+      <div class="city">Atlanta</div>
+      <!-- Add more cities as needed -->
     </div>
   </div>
+
+  <div class="weather-info" id="weatherInfo">
+    <!-- Current weather and forecast will be dynamically inserted here -->
+  </div>
+
+  <div class="clear"></div>
 </div>
 
 <script>
-// Your OpenWeather API key
+// Helper function to create an element
+function createElement(tag, className, content) {
+  var element = document.createElement(tag);
+  if (className) element.className = className;
+  if (content) element.textContent = content;
+  return element;
+}
+
+// API Key
 var apiKey = '309f7d94b615b8ccc37b28c459d59071';
 
+// Function to fetch weather data
 function fetchWeather(cityName) {
   var currentWeatherUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + apiKey + '&units=imperial';
-
-  fetch(currentWeatherUrl)
-    .then(function(response) { return response.json(); })
-    .then(function(data) {
-      var detailsDiv = document.getElementById('current-weather');
-      detailsDiv.innerHTML = 
-        '<div>Temp: ' + Math.round(data.main.temp) + '°F</div>' +
-        '<div>Wind: ' + Math.round(data.wind.speed) + ' MPH</div>' +
-        '<div>Humidity: ' + data.main.humidity + '%</div>';
-      document.getElementById('location-name').textContent = data.name;
-      fetchForecast(cityName);
-    })
-    .catch(function(error) {
-      console.error('Error:', error);
-    });
-}
-
-function fetchForecast(cityName) {
   var forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + cityName + '&appid=' + apiKey + '&units=imperial';
 
-  fetch(forecastUrl)
-    .then(function(response) { return response.json(); })
-    .then(function(data) {
-      var forecastContainer = document.getElementById('forecast-container');
-      forecastContainer.innerHTML = '';
-      for (var i = 0; i < 40; i += 8) { // Only take one reading per day
-        var dayData = data.list[i];
-        var date = new Date(dayData.dt * 1000);
-        forecastContainer.innerHTML +=
-          '<div class="day">' +
-          '<h3>' + (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + '</h3>' +
-          '<img src="https://openweathermap.org/img/wn/' + dayData.weather[0].icon + '.png" alt="Weather Icon">' +
-          '<div>Temp: ' + Math.round(dayData.main.temp) + '°F</div>' +
-          '<div>Wind: ' + Math.round(dayData.wind.speed) + ' MPH</div>' +
-          '<div>Humidity: ' + dayData.main.humidity + '%</div>' +
-          '</div>';
-      }
-    })
-    .catch(function(error) {
-      console.error('Error:', error);
-    });
+  Promise.all([
+    fetch(currentWeatherUrl).then(response => response.json()),
+    fetch(forecastUrl).then(response => response.json())
+  ]).then(function (data) {
+    var currentData = data[0];
+    var forecastData = data[1];
+    updateWeatherDisplay(currentData, forecastData);
+  }).catch(function (error) {
+    console.error('Error:', error);
+  });
 }
 
-document.getElementById('search-button').addEventListener('click', function() {
-  var cityName = document.getElementById('search-input').value;
-  fetchWeather(cityName);
-});
+// Function to update weather display
+function updateWeatherDisplay(currentData, forecastData) {
+  var weatherInfo = document.getElementById('weatherInfo');
+  weatherInfo.innerHTML = '';
 
-// Load default city's weather on initial load
-fetchWeather('Riverside');
+  // Add current weather
+  var cityName = createElement('h2', '', currentData.name + ' (' + new Date(currentData.dt * 1000).toLocaleDateString() + ')');
+  var temp = createElement('p', '', 'Temp: ' + currentData.main.temp + '°F');
+  var wind = createElement('p', '', 'Wind: ' + currentData.wind.speed + ' MPH');
+  var humidity = createElement('p', '', 'Humidity: ' + currentData.main.humidity + '%');
+  weatherInfo.appendChild(cityName);
+  weatherInfo.appendChild(temp);
+  weatherInfo.appendChild(wind);
+  weatherInfo.appendChild(humidity);
 
-// Add city buttons
-var cities = ['San Diego', 'Atlanta', 'Denver', 'Seattle', 'Orlando', 'New York', 'Chicago', 'Austin'];
-var cityList = document.getElementById('city-list');
-cities.forEach(function(city) {
-  var li = document.createElement('li');
-  li.textContent = city;
-  li.addEventListener('click', function() {
-    fetchWeather(city);
+  // Add forecast
+  var forecastDiv = createElement('div', 'forecast', '');
+  forecastData.list.forEach(function (forecast, index) {
+    if (index % 8 === 0) {
+      var dayDiv = createElement('div', 'day', '');
+      var date = createElement('h3', '', new Date(forecast.dt * 1000).toLocaleDateString());
+      var icon = createElement('img', '', '');
+      icon.src = 'https://openweathermap.org/img/wn/' + forecast.weather[0].icon + '.png';
+      var temp = createElement('p', '', 'Temp: ' + forecast.main.temp + '°F');
+      var wind = createElement('p', '', 'Wind: ' + forecast.wind.speed + ' MPH');
+      var humidity = createElement('p', '', 'Humidity: ' + forecast.main.humidity + '%');
+      dayDiv.appendChild(date);
+      dayDiv.appendChild(icon);
+      dayDiv.appendChild(temp);
+      dayDiv.appendChild(wind);
+      dayDiv.appendChild(humidity);
+      forecastDiv.appendChild(dayDiv);
+    }
   });
-  cityList.appendChild(li);
+  weatherInfo.appendChild(forecastDiv);
+}
+
+// Event listeners
+document.getElementById('searchButton').addEventListener('click', function () {
+  var cityInput = document.getElementById('cityInput').value.trim();
+  if (cityInput) {
+    fetchWeather(cityInput);
+  }
 });
+
+document.getElementById('cityList').addEventListener('click', function (e) {
+  if (e.target && e.target.matches('.city')) {
+    fetchWeather(e.target.textContent);
+  }
+});
+
+// Initial call
+fetchWeather('Atlanta');
 </script>
 
 </body>
 </html>
-
-</body>
-</html>
-
