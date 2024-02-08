@@ -4,6 +4,19 @@ module.exports = {
       autoprefixer: {},
     }
   }
+
+const express = require('express');
+const cors = require('cors');
+const app = express();
+
+app.use(cors());
+
+// Your routes here
+
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
+
   
   // JavaScript to handle city search and display weather information
 document.getElementById('search-btn').addEventListener('click', function() {
