@@ -1,61 +1,51 @@
-module.exports = {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    }
-  }
-
-const express = require('express');
-const cors = require('cors');
-const app = express();
-
-app.use(cors());
-
-// Your routes here
-
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
-});
-
-  
-  // JavaScript to handle city search and display weather information
 document.getElementById('search-btn').addEventListener('click', function() {
     var cityName = document.getElementById('city-search').value;
-    var apiKey = '6bcbafbbb6b80088967801dc260b977b'; // Your OpenWeather API key
-    var weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=imperial`;
-    
-    fetch(weatherUrl)
-      .then(response => response.json())
-      .then(data => {
-        // Display current weather information
-        document.getElementById('city-name').textContent = data.name + ' (Current)';
-        document.getElementById('current-temp').textContent = 'Temp: ' + data.main.temp + ' °F';
-        document.getElementById('current-wind').textContent = 'Wind: ' + data.wind.speed + ' MPH';
-        document.getElementById('current-humidity').textContent = 'Humidity: ' + data.main.humidity + '%';
-        
-        // Get 5-day forecast data
-        var forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=imperial`;
-        return fetch(forecastUrl);
-      })
-      .then(response => response.json())
-      .then(data => {
-        var forecastEl = document.getElementById('forecast');
-        forecastEl.innerHTML = ''; // Clear previous forecasts
-        
-        // Process and display 5-day forecast
-        for (let i = 0; i < data.list.length; i+=8) { // API returns weather in 3-hour intervals
-          var dayData = data.list[i];
-          var forecastCard = document.createElement('div');
-          forecastCard.classList = 'bg-white shadow-lg rounded-lg p-4 text-center';
-          forecastCard.innerHTML = `
-            <h3 class="font-bold text-gray-800">${new Date(dayData.dt_txt).toLocaleDateString()}</h3>
-            <img src="https://openweathermap.org/img/w/${dayData.weather[0].icon}.png" alt="${dayData.weather[0].description}">
-            <p class="text-gray-700">Temp: ${dayData.main.temp} °F</p>
-            <p class="text-gray-700">Wind: ${dayData.wind.speed} MPH</p>
-            <p class="text-gray-700">Humidity: ${dayData.main.humidity}%</p>
-          `;
-          forecastEl.appendChild(forecastCard);
-        }
-      })
-      .catch(error => console.error('Error:', error));
-  });
+    fetchCurrentWeather(cityName);
+    fetchWeatherForecast(cityName);
+});
+
+function fetchCurrentWeather(cityName) {
+    var apiKey = 'YOUR_API_KEY';
+    var url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=imperial`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('city-title').textContent = `Current Weather for ${data.name}`;
+            document.getElementById('current-weather-data').innerHTML = `
+                <p>Temperature: ${data.main.temp} °F</p>
+                <p>Wind Speed: ${data.wind.speed} mph</p>
+                <p>Humidity: ${data.main.humidity}%</p>
+            `;
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function fetchWeatherForecast(cityName) {
+    var apiKey = 'YOUR_API_KEY';
+    var url = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=imperial`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const forecastContainer = document.getElementById('forecast-container');
+            forecastContainer.innerHTML = ''; // Clear previous content
+
+            // Process the 5-day forecast data
+            for (let i = 0; i < data.list.length; i += 8) { // The API returns 3-hourly forecast, so we take every 8th entry for a daily forecast
+                const forecast = data.list[i];
+                const date = new Date(forecast.dt_txt);
+                forecastContainer.innerHTML += `
+                    <div class="forecast-day">
+                        <h3>${date.toLocaleDateString()}</h3>
+                        <img src="http://openweathermap.org/img/wn/${forecast.weather[0].icon}.png" alt="${forecast.weather[0].description}">
+                        <p>${forecast.weather[0].main}</p>
+                        <p>Temp: ${forecast.main.temp} °F</p>
+                        <p>Wind: ${forecast.wind.speed} mph</p>
+                        <p>Humidity: ${forecast.main.humidity}%</p>
+                    </div>
+                `;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
