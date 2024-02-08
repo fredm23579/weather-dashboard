@@ -1,119 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Weather Dashboard</title>
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
-<style src="style.css"></style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<div class="container">
-  <div class="header">
-    <h1>Weather Dashboard</h1>
-  </div>
-
-  <div class="search-area">
-    <input type="text" id="cityInput" placeholder="Search for a City">
-    <button id="searchButton">Search</button>
-    <div id="cityList">
-      <div class="city">San Diego</div>
-      <div class="city">Atlanta</div>
-      <!-- Add more cities as needed -->
+    <div class="container">
+        <header>
+            <h1>Weather Dashboard</h1>
+        </header>
+        <main>
+            <section class="search-bar">
+                <input type="text" id="city-search" placeholder="Enter city name">
+                <button id="search-button">Search</button>
+            </section>
+            <section class="current-weather">
+                <h2 id="city-name"></h2>
+                <img id="weather-icon" src="" alt="">
+                <p id="current-temp"></p>
+                <p id="humidity"></p>
+                <p id="wind-speed"></p>
+            </section>
+            <section class="forecast">
+                <h3>5-Day Forecast</h3>
+                <ul id="forecast-list"></ul>
+            </section>
+            <section class="search-history">
+                <h3>Search History</h3>
+                <ul id="search-history-list"></ul>
+            </section>
+        </main>
     </div>
-  </div>
-
-  <div class="weather-info" id="weatherInfo">
-    <!-- Current weather and forecast will be dynamically inserted here -->
-  </div>
-
-  <div class="clear"></div>
-</div>
-
-<script>
-// Helper function to create an element
-function createElement(tag, className, content) {
-  var element = document.createElement(tag);
-  if (className) element.className = className;
-  if (content) element.textContent = content;
-  return element;
-}
-
-// API Key
-var apiKey = '309f7d94b615b8ccc37b28c459d59071';
-
-// Function to fetch weather data
-function fetchWeather(cityName) {
-  var currentWeatherUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + apiKey + '&units=imperial';
-  var forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + cityName + '&appid=' + apiKey + '&units=imperial';
-
-  Promise.all([
-    fetch(currentWeatherUrl).then(response => response.json()),
-    fetch(forecastUrl).then(response => response.json())
-  ]).then(function (data) {
-    var currentData = data[0];
-    var forecastData = data[1];
-    updateWeatherDisplay(currentData, forecastData);
-  }).catch(function (error) {
-    console.error('Error:', error);
-  });
-}
-
-// Function to update weather display
-function updateWeatherDisplay(currentData, forecastData) {
-  var weatherInfo = document.getElementById('weatherInfo');
-  weatherInfo.innerHTML = '';
-
-  // Add current weather
-  var cityName = createElement('h2', '', currentData.name + ' (' + new Date(currentData.dt * 1000).toLocaleDateString() + ')');
-  var temp = createElement('p', '', 'Temp: ' + currentData.main.temp + '°F');
-  var wind = createElement('p', '', 'Wind: ' + currentData.wind.speed + ' MPH');
-  var humidity = createElement('p', '', 'Humidity: ' + currentData.main.humidity + '%');
-  weatherInfo.appendChild(cityName);
-  weatherInfo.appendChild(temp);
-  weatherInfo.appendChild(wind);
-  weatherInfo.appendChild(humidity);
-
-  // Add forecast
-  var forecastDiv = createElement('div', 'forecast', '');
-  forecastData.list.forEach(function (forecast, index) {
-    if (index % 8 === 0) {
-      var dayDiv = createElement('div', 'day', '');
-      var date = createElement('h3', '', new Date(forecast.dt * 1000).toLocaleDateString());
-      var icon = createElement('img', '', '');
-      icon.src = 'https://openweathermap.org/img/wn/' + forecast.weather[0].icon + '.png';
-      var temp = createElement('p', '', 'Temp: ' + forecast.main.temp + '°F');
-      var wind = createElement('p', '', 'Wind: ' + forecast.wind.speed + ' MPH');
-      var humidity = createElement('p', '', 'Humidity: ' + forecast.main.humidity + '%');
-      dayDiv.appendChild(date);
-      dayDiv.appendChild(icon);
-      dayDiv.appendChild(temp);
-      dayDiv.appendChild(wind);
-      dayDiv.appendChild(humidity);
-      forecastDiv.appendChild(dayDiv);
-    }
-  });
-  weatherInfo.appendChild(forecastDiv);
-}
-
-// Event listeners
-document.getElementById('searchButton').addEventListener('click', function () {
-  var cityInput = document.getElementById('cityInput').value.trim();
-  if (cityInput) {
-    fetchWeather(cityInput);
-  }
-});
-
-document.getElementById('cityList').addEventListener('click', function (e) {
-  if (e.target && e.target.matches('.city')) {
-    fetchWeather(e.target.textContent);
-  }
-});
-
-// Initial call
-fetchWeather('Atlanta');
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
+
