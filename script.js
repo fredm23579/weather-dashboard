@@ -65,7 +65,7 @@ function fetchForecast(lat, lon) {
 // Display current weather data
 function displayCurrentWeather(data) {
   cityNameDisplay.textContent = data.name + " (" + new Date().toLocaleDateString() + ")";
-  weatherIcon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+  weatherIcon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
   currentTemp.textContent = "Temperature: " + data.main.temp + "°F";
   humidity.textContent = "Humidity: " + data.main.humidity + "%";
   windSpeed.textContent = "Wind Speed: " + data.wind.speed + " MPH";
@@ -83,7 +83,7 @@ function displayForecast(data) {
     forecastItem.classList.add("forecast-item");
 
     const date = new Date(dailyData.dt * 1000).toLocaleDateString();
-    const iconUrl = `http://openweathermap.org/img/wn/${dailyData.weather[0].icon}@2x.png`;
+    const iconUrl = `https://openweathermap.org/img/wn/${dailyData.weather[0].icon}@2x.png`;
 
     forecastItem.innerHTML = `
             <p class="forecast-date">${date}</p>
