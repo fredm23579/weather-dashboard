@@ -1,5 +1,5 @@
 // Replace 'YOUR_API_KEY' with your actual API key from OpenWeatherMap
-const apiKey = '975333c4c08534e5a5371761f64ed860';
+const apiKey = '309f7d94b615b8ccc37b28c459d59071';
 
 document.getElementById('search-btn').addEventListener('click', function() {
     var cityName = document.getElementById('city-search').value.trim();
@@ -8,14 +8,14 @@ document.getElementById('search-btn').addEventListener('click', function() {
 });
 
 function fetchCurrentWeather(cityName, apiKey) {
-    var url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=imperial`;
+    var url = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&'+ 'appid='+ apiKey + '&units=imperial';
 
     fetch(url)
         .then(response => response.json())
         .then(data => {
             // Ensure data is valid here before trying to access its properties
             if (data && data.weather) {
-                document.getElementById('city-title').textContent = `Current Weather for ${data.name}`;
+                document.getElementById('city-title').textContent = 'Current Weather for' + data.name;
                 document.getElementById('current-weather-data').innerHTML = `
                     <p>Temperature: ${data.main.temp} °F</p>
                     <p>Wind Speed: ${data.wind.speed} mph</p>
@@ -32,7 +32,7 @@ function fetchCurrentWeather(cityName, apiKey) {
 }
 
 function fetchWeatherForecast(cityName, apiKey) {
-    var url = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=imperial`;
+    var url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + cityName + '&'+ 'appid='+ apiKey + '&units=imperial';
 
     fetch(url)
         .then(response => response.json())
