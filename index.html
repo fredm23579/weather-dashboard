@@ -1,111 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather Dashboard</title>
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Open Sans', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #edf2f7;
-    }
-    .container {
-      max-width: 960px;
-      margin: 20px auto;
-      padding: 20px;
-      background: #ffffff;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .search-area {
-      background-color: #ffffff;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 5px;
-    }
-    .search-box {
-      display: flex;
-      margin-bottom: 20px;
-    }
-    .search-box input {
-      flex: 1;
-      padding: 10px;
-      border: 2px solid #dddddd;
-      border-radius: 5px 0 0 5px;
-      border-right: none;
-    }
-    .search-box button {
-      padding: 10px 20px;
-      background-color: #1e40af;
-      color: white;
-      border: none;
-      border-radius: 0 5px 5px 0;
-      cursor: pointer;
-    }
-    .city-list {
-      list-style: none;
-      padding-left: 0;
-    }
-    .city-list li {
-      background-color: #dddddd;
-      padding: 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-bottom: 10px;
-    }
-    .city-list li:hover {
-      background-color: #cccccc;
-    }
-    .weather-info {
-      padding: 20px;
-      border-radius: 5px;
-      background-color: #1e40af;
-      color: white;
-      margin-bottom: 20px;
-    }
-    .forecast {
-      display: flex;
-      justify-content: space-between;
-    }
-    .forecast > div {
-      flex: 1;
-      background-color: #dddddd;
-      padding: 20px;
-      border-radius: 5px;
-      margin-right: 20px;
-      text-align: center;
-    }
-    .forecast > div:last-child {
-      margin-right: 0;
-    }
-    .forecast h3 {
-      margin: 10px 0;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weather Dashboard</title>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Open Sans', sans-serif;
+    background: #edf2f7;
+    margin: 0;
+    padding: 20px;
+  }
+  .header {
+    background-color: #4b79a1;
+    color: white;
+    padding: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+    border-radius: 10px;
+  }
+  .main-content {
+    display: flex;
+    margin-top: 20px;
+  }
+  .search-panel {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 20%;
+    margin-right: 20px;
+  }
+  .search-panel input,
+  .search-panel button,
+  .search-panel .city {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  .search-panel button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  .search-panel .city {
+    background-color: #e7e7e7;
+    cursor: pointer;
+    text-align: left;
+  }
+  .search-panel .city:hover {
+    background-color: #d7d7d7;
+  }
+  .weather-info {
+    flex-grow: 1;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .weather-info header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+  }
+  .weather-info header h2 {
+    margin: 0;
+  }
+  .forecast {
+    display: flex;
+    justify-content: space-between;
+  }
+  .forecast .day {
+    flex-grow: 1;
+    background: #e7e7e7;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  .forecast .day:not(:last-child) {
+    margin-right: 20px;
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="search-area">
-      <div class="search-box">
-        <input type="text" id="city-input" placeholder="Search for a City:" />
-        <button id="search-button">Search</button>
+
+<div class="header">
+  Weather Dashboard
+</div>
+
+<div class="main-content">
+  <div class="search-panel">
+    <input type="text" placeholder="Search for a city" />
+    <button>Search</button>
+    <div class="city">San Diego</div>
+    <div class="city">Atlanta</div>
+    <div class="city">Denver</div>
+    <div class="city">Seattle</div>
+    <div class="city">Orlando</div>
+    <div class="city">New York</div>
+    <div class="city">Chicago</div>
+    <div class="city">Austin</div>
+  </div>
+
+  <div class="weather-info">
+    <header>
+      <h2>Atlanta (9/13/2022) ☀️</h2>
+      <div>
+        <div>Temp: 76.62°F</div>
+        <div>Wind: 8.43 MPH</div>
+        <div>Humidity: 44 %</div>
       </div>
-      <ul class="city-list" id="city-list">
-        <!-- City buttons will be added here -->
-      </ul>
-    </div>
+    </header>
 
-    <div class="weather-info" id="current-weather">
-      <!-- Current weather details will be added here -->
-    </div>
-
-    <div class="forecast" id="forecast">
-      <!-- 5-day forecast details will be added here -->
+    <h3>5-Day Forecast:</h3>
+    <div class="forecast">
+      <div class="day">
+        <h4>9/14/2022</h4>
+        <img src="https://via.placeholder.com/50" alt="Weather icon" />
+        <div>Temp: 63.55 °F</div>
+        <div>Wind: 3.94 MPH</div>
+        <div>Humidity: 63 %</div>
+      </div>
+      <div class="day">
+        <h4>9/15/2022</h4>
+        <img src="https://via.placeholder.com/50" alt="Weather icon" />
+        <div>Temp: 66.52 °F</div>
+        <div>Wind: 3.91 MPH</div>
+        <div>Humidity: 64 %</div>
+      </div>
+      <div class="day">
+        <h4>9/16/2022</h4>
+        <img src="https://via.placeholder.com/50" alt="Weather icon" />
+        <div>Temp: 67.71 °F</div>
+        <div>Wind: 3.27 MPH</div>
+        <div>Humidity: 64 %</div>
+      </div>
+      <div class="day">
+        <h4>9/17/2022</h4>
+        <img src="https://via.placeholder.com/50" alt="Weather icon" />
+        <div>Temp: 67.1 °F</div>
+        <div>Wind: 4.65 MPH</div>
+        <div>Humidity: 72 %</div>
+      </div>
+      <div class="day">
+        <h4>9/18/2022</h4>
+        <img src="https://via.placeholder.com/50" alt="Weather icon" />
+        <div>Temp: 70.57 °F</div>
+        <div>Wind: 4.23 MPH</div>
+        <div>Humidity: 62 %</div>
+      </div>
     </div>
   </div>
+</div>
 
   <script>
     // Your OpenWeather API key
