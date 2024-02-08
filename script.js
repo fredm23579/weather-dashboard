@@ -1,7 +1,6 @@
-const apiKey = "309f7d94b615b8ccc37b28c459d59071"; // Replace with your API key
-
+const apiKey = "309f7d94b615b8ccc37b28c459d59071"; // Replace with your OpenWeatherMap API key
 const searchButton = document.getElementById("search-button");
-const cityNameInput = document.getElementById("city-search");
+const cityInput = document.getElementById("city-search");
 const cityNameDisplay = document.getElementById("city-name");
 const weatherIcon = document.getElementById("weather-icon");
 const currentTemp = document.getElementById("current-temp");
@@ -12,49 +11,72 @@ const searchHistoryList = document.getElementById("search-history-list");
 
 let searchHistory = loadSearchHistory();
 
-// Function to fetch weather data
+// Fetch current weather data 
 function fetchWeatherData(city) {
-  const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=<span class="math-inline">\{city\}&appid\=</span>{apiKey}&units=imperial`;
+  const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
 
-  fetch(currentWeatherUrl)
-    .then((response) => response.json())
-    .then((data) => {
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", currentWeatherUrl);
+
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      const data = JSON.parse(xhr.responseText);
       if (data.cod === "404") {
         alert("City not found.");
         return;
       }
-
       displayCurrentWeather(data);
-
       fetchForecast(data.coord.lat, data.coord.lon);
-    });
+    } else {
+      handleAPIError(city, xhr);
+    }
+  };
+
+  xhr.onerror = function() { 
+    handleAPIError(city, xhr);
+  };
+
+  xhr.send();
 }
 
-// Function to fetch 5-day forecast data
+// Fetch 5-day forecast data
 function fetchForecast(lat, lon) {
-  const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=<span class="math-inline">\{lat\}&lon\=</span>{lon}&appid=${apiKey}&units=imperial`;
+  const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
 
-  fetch(forecastUrl)
-    .then((response) => response.json())
-    .then((data) => displayForecast(data));
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", forecastUrl);
+
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      const data = JSON.parse(xhr.responseText);
+      displayForecast(data);
+    } else {
+      handleAPIError('forecast', xhr); 
+    }
+  };
+
+  xhr.onerror = function() { 
+    handleAPIError('forecast', xhr); 
+  };
+
+  xhr.send();
 }
 
-// Function to display current weather
+// Display current weather data
 function displayCurrentWeather(data) {
   cityNameDisplay.textContent = data.name + " (" + new Date().toLocaleDateString() + ")";
   weatherIcon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
   currentTemp.textContent = "Temperature: " + data.main.temp + "°F";
   humidity.textContent = "Humidity: " + data.main.humidity + "%";
   windSpeed.textContent = "Wind Speed: " + data.wind.speed + " MPH";
-
-  saveSearchHistory(data.name); // Save search to history
+  saveSearchHistory(data.name); 
 }
 
-// Function to display 5-day forecast
+// Display 5-day forecast data
 function displayForecast(data) {
-  forecastList.innerHTML = ""; // Clear previous forecast
+  forecastList.innerHTML = ""; 
 
-  for (let i = 0; i < data.list.length; i += 8) { // Get data at intervals for the daily forecast
+  for (let i = 0; i < data.list.length; i += 8) { 
     const dailyData = data.list[i];
 
     const forecastItem = document.createElement("li");
@@ -64,69 +86,42 @@ function displayForecast(data) {
     const iconUrl = `http://openweathermap.org/img/wn/${dailyData.weather[0].icon}@2x.png`;
 
     forecastItem.innerHTML = `
-        <p class="forecast-date"><span class="math-inline">\{date\}</p\>
-<img class\="forecast\-icon" src\="</span>{iconUrl}" alt="">
-        <p>Temp: ${dailyData.main.temp} °F</p>
-        <p>Humidity: ${dailyData.main.humidity} %</p>
-        <p>Wind: ${dailyData.wind.speed} MPH</p>
-    `;
+            <p class="forecast-date">${date}</p>
+            <img class="forecast-icon" src="${iconUrl}" alt="">
+            <p>Temp: ${dailyData.main.temp} °F</p>
+            <p>Humidity: ${dailyData.main.humidity} %</p>
+            <p>Wind: ${dailyData.wind.speed} MPH</p>
+        `;
 
     forecastList.appendChild(forecastItem);
   }
 }
 
-// Function to load search history from localStorage
+// Load search history from localStorage
 function loadSearchHistory() {
-  // Implementation goes here (provided below)
+  const storedHistory = localStorage.getItem("searchHistory");
+  return storedHistory ? JSON.parse(storedHistory) : []; 
 }
 
-// Function to save search history to localStorage
+// Save search history to localStorage
 function saveSearchHistory(city) {
-  // Implementation goes here (provided below)
-}
-
-// Event listener for search button
-searchButton.addEventListener("click", () => {
-  const city = cityNameInput.value.trim();
-  if (!city) {
-    alert("Please enter a city name.");
-    return;
-  }
-
-  fetchWeatherData(city);
-// ... (Rest of your script.js code from the previous example)
-
-// Function to load search history from localStorage
-function loadSearchHistory() {
-  let history = localStorage.getItem("weatherSearchHistory");
-  if (history) {
-    return JSON.parse(history);
-  } else {
-    return []; // Return empty array if nothing in localStorage
+  if (!searchHistory.includes(city)) { 
+    searchHistory.push(city);
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+    renderSearchHistory();
   }
 }
 
-// Function to save search history to localStorage
-function saveSearchHistory(city) {
-  // Don't add duplicate cities
-  if (searchHistory.includes(city)) return;
-
-  searchHistory.push(city); 
-  localStorage.setItem("weatherSearchHistory", JSON.stringify(searchHistory));
-  renderSearchHistory(); // Update the displayed search history
-}
-
-// Function to render the search history in the UI
+// Render the search history 
 function renderSearchHistory() {
-  searchHistoryList.innerHTML = '';
+    searchHistoryList.innerHTML = ''; 
 
-  searchHistory.forEach(city => {
-    const historyItem = document.createElement("li");
-    historyItem.classList.add("search-history-item");
+    searchHistory.forEach(city => {
+    const historyItem = document.createElement('li');
+    historyItem.classList.add('search-history-item');
     historyItem.textContent = city;
 
-    // Event listener to re-fetch weather when history item is clicked
-    historyItem.addEventListener('click', () => {
+    historyItem.addEventListener('click', () => { 
       fetchWeatherData(city); 
     });
 
@@ -134,10 +129,33 @@ function renderSearchHistory() {
   });
 }
 
+// Error Handling on API Requests
+function handleAPIError(city, xhr) {
+  console.error('Error fetching data for ' + city + ':', xhr.status, xhr.statusText);
+  if (xhr.status === 404) {
+    alert("City not found.");
+  } else {
+    alert("There was a problem retrieving weather data. Please try again later.");
+  }
+}
+
+// Event listener for search button
+searchButton.addEventListener("click", () => {
+  const city = cityInput.value.trim(); 
+  if (city) { 
+    fetchWeatherData(city);
+    cityInput.value = ''; 
+  } else {
+    alert("Please enter a city name.");
+  }
+});
+
 // Load and display initial search history on page load
 renderSearchHistory();
 
 // Example - Load default location (Riverside, California) on page load
+fetchWeatherData("Riverside, California"); 
+
 fetchWeatherData("Riverside, California"); 
 
 
