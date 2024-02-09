@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Weather Dashboard</title>
-<link rel="stylesheet" href="path_to_your_stylesheet.css"> <!-- Link to your CSS file -->
-<script>
-// Your JavaScript code here
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-  <header>
-    <h1>Weather Dashboard</h1>
-  </header>
-  <div class="search-bar">
-    <input id="city-search" type="text" placeholder="San Diego" aria-label="City name">
-    <button id="search-button" type="button">
-      Search
-    </button>
-  </div>
-  <div id="search-history-list" class="search-history">
-    <!-- Search history will be populated here -->
-  </div>
-  <div class="current-weather">
-    <h2 id="city-name"></h2>
-    <img id="weather-icon" src="" alt="Weather icon">
-  </div>
-  <h3>5-Day Forecast:</h3>
-  <ul id="forecast-list" class="forecast">
-    <!-- 5-day forecast will be populated here -->
-  </ul>
-</div>
+    <div class="container">
+        <header>
+            <h1>Weather Dashboard</h1>
+        </header>
+        <main>
+            <section class="search-bar">
+                <input type="text" id="city-search" placeholder="Enter city name">
+                <button id="search-button">Search</button>
+            </section>
+            <section class="current-weather">
+                <h2 id="city-name"></h2>
+                <img id="weather-icon" src="" alt="">
+                <p id="current-temp"></p>
+                <p id="humidity"></p>
+                <p id="wind-speed"></p>
+            </section>
+            <section class="forecast">
+                <h3>5-Day Forecast</h3>
+                <ul id="forecast-list"></ul>
+            </section>
+            <section class="search-history">
+                <h3>Search History</h3>
+                <ul id="search-history-list"></ul>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
