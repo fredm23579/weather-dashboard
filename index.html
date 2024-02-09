@@ -1,39 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weather Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<script>
+// Your JavaScript code here
+</script>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>Weather Dashboard</h1>
-        </header>
-        <main>
-            <section class="search-bar">
-                <input type="text" id="city-search" placeholder="Enter city name">
-                <button id="search-button">Search</button>
-            </section>
-            <section class="current-weather">
-                <h2 id="city-name"></h2>
-                <img id="weather-icon" src="" alt="">
-                <p id="current-temp"></p>
-                <p id="humidity"></p>
-                <p id="wind-speed"></p>
-            </section>
-            <section class="forecast">
-                <h3>5-Day Forecast</h3>
-                <ul id="forecast-list"></ul>
-            </section>
-            <section class="search-history">
-                <h3>Search History</h3>
-                <ul id="search-history-list"></ul>
-            </section>
-        </main>
+<body class="bg-gray-100">
+<div class="container mx-auto py-8">
+  <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div class="mb-4">
+      <h1 class="text-3xl mb-2 text-gray-700 font-bold">Search for a City:</h1>
+      <div class="flex items-center border-b border-b-2 border-teal-500 py-2">
+        <input id="city-search" class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" placeholder="San Diego" aria-label="City name">
+        <button id="search-button" class="flex-shrink-0 bg-blue-500 hover:bg-blue-700 border-blue-500 hover:border-blue-700 text-sm border-4 text-white py-1 px-2 rounded" type="button">
+          Search
+        </button>
+      </div>
     </div>
-    <script src="script.js"></script>
+    <div id="search-history-list" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <!-- Search history will be populated here -->
+    </div>
+    <div class="mt-8">
+      <h2 id="city-name" class="text-2xl mb-2 text-gray-700 font-bold"></h2>
+      <div class="flex items-center mb-4">
+        <img id="weather-icon" src="" alt="Weather icon" class="mr-4">
+        <div>
+          <p id="current-temp">Temperature: --°F</p>
+          <p id="humidity">Humidity: --%</p>
+          <p id="wind-speed">Wind Speed: -- MPH</p>
+        </div>
+      </div>
+      <h3 class="text-xl mb-2 text-gray-700 font-bold">5-Day Forecast:</h3>
+      <ul id="forecast-list" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <!-- 5-day forecast will be populated here -->
+      </ul>
+    </div>
+  </div>
+</div>
 </body>
 </html>
-
