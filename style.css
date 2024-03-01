@@ -1,128 +1,115 @@
-body {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-/* Header */
-header {
-  background: linear-gradient(to right, #6c43bd, #3023ab); /* Adjusted purple gradient */
-  text-align: center;
-  padding: 30px 10px; /* Increased padding, slightly less rounded corners */
-  margin-bottom: 40px;
-  border-radius: 3px;
-}
-
-h1 {
-  font-size: 2.2em;
-  margin-bottom: 10px;
-  color: white;
-  font-weight: bold;
-}
-
-/* Search Bar */
-.search-bar {
-  display: flex;
-  justify-content: space-between; /* Centered search bar */
-  margin-bottom: 30px;
-}
-
-#city-search {
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-#search-button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-/* Current Weather*/
-.current-weather {
-  display: flex;
-  align-items: center;
-  justify-content: space-around; /* Adjusted spacing */
-  margin-bottom: 20px;
-}
-
-#city-name {
-  font-size: 1.6em;
-  font-weight: bold;
-  margin-right: 0px; /* Closer alignment */
-}
-
-#weather-icon {
-  width: 120px;
-  height: 120px; /* Larger icon */
-}
-
-/* 5-Day Forecast*/
-.forecast {
-  margin-bottom: 20px;
-}
-
-h3 { /* Header for 5 day forecast */
-  margin-bottom: 15px;
-  text-align: center; /* Centered title */
-  font-size: 1.1em;
-}
-
-#forecast-list {
-  list-style: none;
-  padding: 0;
-  display: flex; /* Added flexbox for horizontal layout */
-  overflow-x: scroll; /* Enable horizontal scrolling if needed */
-  white-space: nowrap;
-}
-
-.forecast-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0 10px; /* Spacing between forecast cards */
-  padding: 20px;
-  border-radius: 5px;
-  background-color: #002244; /* Dark blue background */
-  box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  width: 180px; /* Set width for responsive layout */
-}
-
-.forecast-date {
-  font-size: 1em;
-  margin-right: 10px;
-  color: white;
-}
-
-.forecast-icon {
-  width: 60px;
-  height: 60px;
-}
-
-/* Search History */
-.search-history {
-  margin-bottom: 20px;
-}
-
-#search-history-list {
-  list-style: none;
-  padding: 0;
-}
-
-.search-history-item {
-  margin-bottom: 5px;
-  cursor: pointer;
-  color: #6c43bd; /* Adjust purple color */
-}
+body, html {
+    margin: 0;
+    font-family: 'Times New Roman', serif;
+    background-color: #f4f7fa;
+    color: #35495e;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .header {
+    background: linear-gradient(to right, #76b852, #8DC26F);
+    color: white;
+    padding: 25px 0;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+  }
+  
+  .search-section, .weather-section, .forecast-section {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+  }
+  
+  .search-history {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .search-history li button {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    width: 100%;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  
+  .search-history li button:hover {
+    background: #43a047;
+    cursor: pointer;
+  }
+  
+  .weather-display h3, .forecast-display h3 {
+    font-weight: bold;
+  }
+  
+  .forecast-card {
+    background: #e3f2fd;
+    border: 1px solid #90caf9;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px;
+    width: calc(20% - 20px);
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .forecast-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .forecast-card img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+  }
+  
+  /* Example CSS filters for weather icons */
+  .forecast-card img.sunny {
+    filter: sepia(20%) saturate(1500%) hue-rotate(-30deg);
+  }
+  
+  .forecast-card img.cloudy {
+    filter: sepia(20%) saturate(700%) hue-rotate(200deg);
+  }
+  
+  .forecast-card img.rainy {
+    filter: sepia(20%) saturate(1000%) hue-rotate(100deg);
+  }
+  
+  .btn-primary {
+    background-color: #8BC34A;
+    border: none;
+    padding: 10px 15px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-primary:hover {
+    background-color: #7CB342;
+  }
+  
+  @media (max-width: 991px) {
+    .forecast-card {
+      width: calc(50% - 20px);
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .forecast-card {
+      width: 100%;
+    }
+  }
