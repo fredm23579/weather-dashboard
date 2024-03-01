@@ -2,7 +2,7 @@
 
 The Weather Dashboard is an intuitive and elegant application designed to deliver real-time weather updates. It combines simplicity and functionality, enabling users to effortlessly access current weather conditions and a 5-day forecast for any city around the globe.
 
-![Weather Dashboard Preview](img.png) 
+![Weather Dashboard Preview](image.png) 
 
 ## Links
 
