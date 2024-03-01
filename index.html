@@ -1,38 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Dashboard</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Weather Dashboard</h1>
-        </header>
-        <main>
-            <section class="search-bar">
-                <input type="text" id="city-search" placeholder="Enter city name">
-                <button id="search-button">Search</button>
-            </section>
-            <section class="current-weather">
-                <h2 id="city-name"></h2>
-                <img id="weather-icon" src="" alt="">
-                <p id="current-temp"></p>
-                <p id="humidity"></p>
-                <p id="wind-speed"></p>
-            </section>
-            <section class="forecast">
-                <h3>5-Day Forecast</h3>
-                <ul id="forecast-list"></ul>
-            </section>
-            <section class="search-history">
-                <h3>Search History</h3>
-                <ul id="search-history-list"></ul>
-            </section>
-        </main>
+  <div class="container">
+    <div class="header text-center">
+      <h1><strong>Weather Dashboard</strong></h1>
     </div>
-    <script src="script.js"></script>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="search-section">
+          <input type="text" class="form-control mb-2" id="cityInput" placeholder="Enter city name">
+          <button class="btn btn-primary btn-block" id="searchBtn">Search</button>
+          <div id="searchHistory"></div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="weather-section" id="weatherDisplay"></div>
+        <div class="forecast-section" id="forecastDisplay"></div>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
