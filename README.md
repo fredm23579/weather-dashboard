@@ -6,8 +6,8 @@ The Weather Dashboard is an intuitive and elegant application designed to delive
 
 ## Links
 
-- **Link to Repository**: ![Repo](https://github.com/fredm23579/weather-dashboard/)
-- **Link to live Application**: ![Weather Dashboard](https://fredm23579.github.io/weather-dashboard/)
+- **Link to Repository**: [Repo](https://github.com/fredm23579/weather-dashboard/)
+- **Link to live Application**: [Weather Dashboard](https://fredm23579.github.io/weather-dashboard/)
 
 
 ## 📝 Description
