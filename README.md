@@ -4,6 +4,12 @@ The Weather Dashboard is an intuitive and elegant application designed to delive
 
 ![Weather Dashboard Preview](path/to/screenshot.png) <!-- Replace with the path to your app screenshot -->
 
+## Links
+
+- **Link to Repository**: ![Repo](https://github.com/fredm23579/weather-dashboard/)
+- **Link to live Application**: ![Weather Dashboard](https://fredm23579.github.io/weather-dashboard/)
+
+
 ## 📝 Description
 
 Weather Dashboard offers a user-friendly platform to quickly retrieve and view weather data. The application is designed to be simple yet informative, providing all necessary weather details at a glance. It's the perfect tool for planning your day or week, ensuring you're always prepared for the weather ahead.
@@ -38,7 +44,7 @@ The motivation behind creating the Weather Dashboard was to provide a straightfo
 
 1. Clone the repository to your local machine:
 ```bash
-git clone https://github.com/your-username/weather-dashboard.git
+git clone https://github.com/fredm23579/weather-dashboard.git
 ```
 Navigate to the project directory and open `index.html` in your web browser.
 Obtain a free API key from [OpenWeatherMap](https://openweathermap.org/api).
